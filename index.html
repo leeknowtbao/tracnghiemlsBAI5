@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc Nghiệm Lịch Sử - Bài 5: Quá Trình Xâm Lược Và Cai Trị Của Chủ Nghĩa Thực Dân Ở Đông Nam Á (50 Câu)</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #FF416C, #FF4B2B);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            padding: 15px;
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.96);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 760px;
+            text-align: center;
+            position: relative;
+            transform: scale(1);
+            transition: transform 0.2s;
+        }
+
+        .shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-4px, 0, 0) rotate(-1.5deg); }
+            20%, 80% { transform: translate3d(8px, 0, 0) rotate(3deg); }
+            30%, 50%, 70% { transform: translate3d(-8px, 0, 0) rotate(-3deg); }
+            40%, 60% { transform: translate3d(8px, 0, 0) rotate(3deg); }
+        }
+
+        .pop {
+            animation: pop 0.3s ease-in-out;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+        h1 { color: #2c3e50; margin-bottom: 12px; font-size: 25px; }
+        h2 { color: #2c3e50; }
+
+        .name-input-group {
+            margin: 18px 0 20px;
+            text-align: left;
+        }
+
+        .name-input-group label {
+            display: block;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 13px 16px;
+            border: 2px solid #dfe6e9;
+            border-radius: 12px;
+            font-size: 16px;
+            color: #2c3e50;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .name-input:focus {
+            border-color: #6c5ce7;
+        }
+
+        .error-msg {
+            color: #e74c3c;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .player-badge {
+            display: inline-block;
+            background: #eef2ff;
+            color: #4b38b3;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+
+        .timer-bar {
+            width: 100%;
+            height: 12px;
+            background: #eee;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .timer-progress {
+            height: 100%;
+            width: 100%;
+            background: #4CAF50;
+            transition: width 0.1s linear, background-color 0.3s;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .combo-badge {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background: #FFD700;
+            color: #000;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 900;
+            transform: rotate(15deg);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+            display: none;
+            animation: pulse 0.5s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: rotate(15deg) scale(1); }
+            100% { transform: rotate(15deg) scale(1.15); }
+        }
+
+        .question {
+            font-size: 19px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 22px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.45;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .btn {
+            background: #6c5ce7;
+            color: white;
+            border: none;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+            box-shadow: 0 4px 0 #4b38b3;
+            text-align: left;
+            line-height: 1.4;
+        }
+
+        .btn:hover:not(:disabled) { background: #5a49e0; }
+        .btn:active:not(:disabled) {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #4b38b3;
+        }
+        .btn:disabled { cursor: default; opacity: 0.95; }
+
+        .btn-correct {
+            background: #2ecc71 !important;
+            box-shadow: 0 4px 0 #27ae60 !important;
+        }
+        .btn-wrong {
+            background: #e74c3c !important;
+            box-shadow: 0 4px 0 #c0392b !important;
+        }
+
+        .explanation-box {
+            margin-top: 18px;
+            padding: 14px 16px;
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            border-radius: 8px;
+            text-align: left;
+            font-size: 15px;
+            color: #34495e;
+            line-height: 1.5;
+            display: none;
+        }
+
+        .btn-next {
+            margin-top: 16px;
+            background: #3498db;
+            box-shadow: 0 4px 0 #2980b9;
+            text-align: center;
+            width: 100%;
+            font-size: 17px;
+            display: none;
+        }
+        .btn-next:hover { background: #2980b9; }
+
+        .btn-start {
+            background: #2ecc71;
+            box-shadow: 0 5px 0 #27ae60;
+            width: 100%;
+            font-size: 20px;
+            padding: 18px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .btn-start:hover { background: #27ae60; }
+
+        .btn-secondary {
+            background: #95a5a6;
+            box-shadow: 0 4px 0 #7f8c8d;
+            text-align: center;
+            padding: 12px 16px;
+            font-size: 15px;
+        }
+        .btn-secondary:hover { background: #7f8c8d; }
+
+        .btn-danger {
+            background: #e74c3c;
+            box-shadow: 0 4px 0 #c0392b;
+            text-align: center;
+            padding: 10px 16px;
+            font-size: 15px;
+        }
+        .btn-danger:hover { background: #c0392b; }
+
+        .end-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .user-summary-box {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 14px;
+            margin: 14px 0 18px;
+            text-align: left;
+            font-size: 15px;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        .leaderboard-section {
+            margin-top: 22px;
+            text-align: left;
+        }
+
+        .leaderboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .leaderboard-header h3 {
+            font-size: 18px;
+            color: #2c3e50;
+        }
+
+        .table-wrap {
+            max-height: 360px;
+            overflow-y: auto;
+            border: 1px solid #e0e6ed;
+            border-radius: 12px;
+            background: #fff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+        }
+
+        thead {
+            position: sticky;
+            top: 0;
+            background: #2c3e50;
+            color: #fff;
+            z-index: 2;
+        }
+
+        th, td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #edf2f7;
+            text-align: left;
+        }
+
+        th:nth-child(1), td:nth-child(1) {
+            width: 76px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        th:nth-child(3), td:nth-child(3),
+        th:nth-child(4), td:nth-child(4) {
+            text-align: center;
+            width: 115px;
+        }
+
+        tr.current-player-row {
+            background: #fff9db;
+            font-weight: 700;
+        }
+
+        .empty-slot {
+            color: #95a5a6;
+            font-style: italic;
+        }
+
+        /* Modal nhập mật khẩu xóa dữ liệu */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 120;
+            padding: 15px;
+        }
+
+        .modal-backdrop.active {
+            display: flex;
+        }
+
+        .modal-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 24px;
+            width: 100%;
+            max-width: 400px;
+            text-align: left;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+        }
+
+        .modal-card h3 {
+            font-size: 19px;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .modal-card p {
+            font-size: 15px;
+            color: #555;
+            margin-bottom: 14px;
+            line-height: 1.45;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 99;
+        }
+
+        .hide { display: none; }
+    </style>
+</head>
+<body>
+
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Modal xác nhận mật khẩu xóa dữ liệu -->
+    <div class="modal-backdrop" id="password-modal">
+        <div class="modal-card">
+            <h3>🔒 Xác nhận mật khẩu xóa dữ liệu</h3>
+            <p>Nhập mật khẩu để xóa toàn bộ dữ liệu họ tên, số lần làm và bảng xếp hạng (#1 - #38):</p>
+            <input
+                type="password"
+                id="delete-password-input"
+                class="name-input"
+                placeholder="Nhập mật khẩu..."
+                autocomplete="off"
+                onkeydown="if(event.key==='Enter') confirmDeleteWithPassword()"
+            >
+            <div class="error-msg" id="password-error">Mật khẩu không đúng! Vui lòng thử lại.</div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closePasswordModal()">Hủy</button>
+                <button class="btn btn-danger" onclick="confirmDeleteWithPassword()">Xác nhận xóa</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="game-container" id="game-card">
+        <div class="combo-badge" id="combo">COMBO x2! 🔥</div>
+
+        <!-- Màn hình bắt đầu -->
+        <div id="start-screen">
+            <h1>🌏 TRẮC NGHIỆM LỊCH SỬ (50 CÂU) 🌏</h1>
+            <p style="margin-bottom: 14px; color: #555; line-height: 1.5; font-size: 16px;">
+                <strong>Bài 5: Quá Trình Xâm Lược Và Cai Trị Của Chủ Nghĩa Thực Dân Ở Đông Nam Á</strong><br>
+                Trả lời đúng liên tiếp để nhân điểm Combo và ghi danh vào bảng xếp hạng (#1 - #38)!
+            </p>
+
+            <div class="name-input-group">
+                <label for="player-name-input">Họ và tên người làm bài:</label>
+                <input
+                    type="text"
+                    id="player-name-input"
+                    class="name-input"
+                    placeholder="Ví dụ: Nguyễn Văn An"
+                    maxlength="60"
+                    onkeydown="if(event.key==='Enter') startGame()"
+                >
+                <div class="error-msg" id="name-error">Vui lòng nhập họ tên trước khi bắt đầu!</div>
+            </div>
+
+            <button class="btn btn-start" onclick="startGame()">BẮT ĐẦU LÀM BÀI!</button>
+
+            <div class="leaderboard-section">
+                <div class="leaderboard-header">
+                    <h3>🏅 BẢNG XẾP HẠNG (HẠNG 1 - HẠNG 38)</h3>
+                    <button class="btn btn-danger" onclick="openPasswordModal()">Xóa dữ liệu lưu</button>
+                </div>
+                <div class="table-wrap" id="start-leaderboard"></div>
+            </div>
+        </div>
+
+        <!-- Màn hình chơi game -->
+        <div id="quiz-screen" class="hide">
+            <div class="player-badge" id="active-player-badge">Thí sinh: ---</div>
+
+            <div class="stats">
+                <span>Điểm: <span id="score" style="color: #e74c3c;">0</span></span>
+                <span>Đúng: <span id="correct-count" style="color: #2ecc71;">0</span>/50</span>
+                <span>Lần làm: <span id="attempt-display" style="color: #6c5ce7;">1</span></span>
+                <span>Câu: <span id="question-number">1</span>/50</span>
+            </div>
+
+            <div class="timer-bar">
+                <div class="timer-progress" id="timer"></div>
+            </div>
+
+            <div class="question" id="question-text">Câu hỏi sẽ hiện ở đây?</div>
+
+            <div class="options" id="options-container"></div>
+
+            <div class="explanation-box" id="explanation-box"></div>
+            <button class="btn btn-next" id="next-btn" onclick="nextQuestion()">CÂU TIẾP THEO ➡️</button>
+        </div>
+
+        <!-- Màn hình kết thúc -->
+        <div id="end-screen" class="hide">
+            <h1>HOÀN THÀNH KIỂM TRA! 🎉</h1>
+            <div class="player-badge" id="end-player-badge">Thí sinh: ---</div>
+            <p style="font-size: 18px; margin: 8px 0 4px;">Điểm lần này:</p>
+            <h2 id="final-score" style="font-size: 46px; color: #e74c3c; margin-bottom: 6px;">0</h2>
+            <p id="final-correct" style="font-size: 17px; color: #555; margin-bottom: 10px;"></p>
+            <p id="rank-text" style="font-weight: bold; color: #2ecc71; margin-bottom: 12px; font-size: 18px;"></p>
+
+            <div class="user-summary-box" id="user-summary-box"></div>
+
+            <button class="btn btn-start" onclick="replaySamePlayer()">LÀM LẠI VỚI TÊN NÀY 🔄</button>
+            <div class="end-actions">
+                <button class="btn btn-secondary" onclick="backToStart()">Đổi họ tên / Màn hình chính</button>
+                <button class="btn btn-danger" onclick="openPasswordModal()">Xóa dữ liệu lưu</button>
+            </div>
+
+            <div class="leaderboard-section">
+                <div class="leaderboard-header">
+                    <h3>🏅 BẢNG XẾP HẠNG (HẠNG 1 - HẠNG 38)</h3>
+                </div>
+                <div class="table-wrap" id="end-leaderboard"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = "lich_su_bai5_50cau_records_v1";
+        const LAST_NAME_KEY = "lich_su_bai5_50cau_last_name_v1";
+        const DELETE_PASSWORD = "1234";
+        const MAX_RANKS = 38;
+
+        const questions = [
+            {
+                q: "Câu 1: Quá trình xâm nhập ban đầu của các nước phương Tây vào Đông Nam Á từ đầu thế kỉ XVI diễn ra chủ yếu qua hoạt động nào?",
+                options: [
+                    "A. Chiến tranh tổng lực quy mô lớn",
+                    "B. Buôn bán và truyền giáo",
+                    "C. Thành lập chính quyền đô hộ trực tiếp",
+                    "D. Kí hiệp ước phân chia vùng đệm"
+                ],
+                answer: 1,
+                explain: "Đầu thế kỉ XVI, phương Tây xâm nhập qua buôn bán và truyền giáo, lập thương điểm chuẩn bị xâm lược."
+            },
+            {
+                q: "Câu 2: Bối cảnh xã hội của phần lớn các nước Đông Nam Á khi thực dân phương Tây tiến hành xâm lược là gì?",
+                options: [
+                    "A. Chế độ phong kiến đang bước vào thời kì phát triển cực thịnh",
+                    "B. Các quốc gia đã thống nhất thành liên bang quân sự",
+                    "C. Chế độ phong kiến suy thoái, khủng hoảng, nhiều cuộc nổi dậy chống lại",
+                    "D. Đã hoàn thành cách mạng tư sản và công nghiệp hóa"
+                ],
+                answer: 2,
+                explain: "Phần lớn các nước Đông Nam Á bước vào thời kì phong kiến suy thoái, khủng hoảng, nhiều cuộc nổi dậy chống lại."
+            },
+            {
+                q: "Câu 3: Thông qua yếu tố nào các nước châu Âu mở rộng giao thương và chuẩn bị cho quá trình xâm lược Đông Nam Á?",
+                options: [
+                    "A. Các thương điểm",
+                    "B. Các ngân hàng tư bản",
+                    "C. Các tuyến đường sắt xuyên lục địa",
+                    "D. Các hiệp hội khoa học"
+                ],
+                answer: 0,
+                explain: "Các nước châu Âu mở rộng giao thương và chuẩn bị xâm lược thông qua các thương điểm."
+            },
+            {
+                q: "Câu 4: Theo Tư liệu 1, sự kiện nào được đánh giá là một trong những đặc điểm quan trọng nhất của kế hoạch chiến lược toàn diện của người Bồ Đào Nha ở Đông Nam Á?",
+                options: [
+                    "A. Đánh chiếm Ma-lắc-ca năm 1511",
+                    "B. Đánh chiếm Phi-líp-pin giữa thế kỉ XVI",
+                    "C. Tiến vào hải cảng Y-an-gun năm 1824",
+                    "D. Tấn công Đà Nẵng năm 1858"
+                ],
+                answer: 0,
+                explain: "Tư liệu 1 khẳng định đánh chiếm Ma-lắc-ca năm 1511 là đặc điểm quan trọng nhất của kế hoạch chiến lược toàn diện của Bồ Đào Nha."
+            },
+            {
+                q: "Câu 5: Ma-lắc-ca (được Bồ Đào Nha đánh chiếm năm 1511 theo Tư liệu 1) ngày nay thuộc quốc gia nào?",
+                options: [
+                    "A. In-đô-nê-xi-a",
+                    "B. Ma-lai-xi-a",
+                    "C. Phi-líp-pin",
+                    "D. Mi-an-ma"
+                ],
+                answer: 1,
+                explain: "Tư liệu 1 ghi rõ Ma-lắc-ca nay thuộc Ma-lai-xi-a."
+            },
+            {
+                q: "Câu 6: Thực dân Tây Ban Nha chính thức xâm lược và thống trị Phi-líp-pin vào thời gian nào?",
+                options: [
+                    "A. Đầu thế kỉ XVI",
+                    "B. Giữa thế kỉ XVI",
+                    "C. Cuối thế kỉ XVI",
+                    "D. Đầu thế kỉ XIX"
+                ],
+                answer: 1,
+                explain: "Tây Ban Nha chính thức xâm lược và thống trị Phi-líp-pin vào giữa thế kỉ XVI."
+            },
+            {
+                q: "Câu 7: Sau cuộc chiến tranh Mỹ - Tây Ban Nha (1898), Phi-líp-pin chuyển sang tình trạng nào?",
+                options: [
+                    "A. Hoàn toàn độc lập dưới chế độ cộng hòa",
+                    "B. Trở thành thuộc địa của Anh",
+                    "C. Trở thành thuộc địa của Mỹ",
+                    "D. Trở thành vùng đệm giữa Anh và Pháp"
+                ],
+                answer: 2,
+                explain: "Sau chiến tranh Mỹ - Tây Ban Nha (1898), Phi-líp-pin trở thành thuộc địa của Mỹ."
+            },
+            {
+                q: "Câu 8: Nhân vật lịch sử nào được nhắc đến trong mục \"Em có biết?\" ở đảo Mắc-tan (Phi-líp-pin)?",
+                options: [
+                    "A. A-gui-nal-đô",
+                    "B. La-pu-la-pu",
+                    "C. Ri-dan",
+                    "D. Su-các-nô"
+                ],
+                answer: 1,
+                explain: "Mục \"Em có biết?\" nhắc đến thủ lĩnh đảo Mắc-tan La-pu-la-pu chống quân Tây Ban Nha năm 1521."
+            },
+            {
+                q: "Câu 9: Cuộc chiến đấu chống quân Tây Ban Nha xâm lược của La-pu-la-pu diễn ra vào năm nào?",
+                options: [
+                    "A. 1511",
+                    "B. 1521",
+                    "C. 1824",
+                    "D. 1898"
+                ],
+                answer: 1,
+                explain: "Quân Tây Ban Nha đánh đảo Mắc-tan năm 1521."
+            },
+            {
+                q: "Câu 10: Hiện nay, hình ảnh La-pu-la-pu được chọn làm biểu tượng cho lực lượng nào ở Phi-líp-pin?",
+                options: [
+                    "A. Hải quân Hoàng gia",
+                    "B. Lực lượng Cảnh sát và Cục Phòng cháy chữa cháy",
+                    "C. Quốc hội lập pháp",
+                    "D. Ngân hàng Trung ương"
+                ],
+                answer: 1,
+                explain: "Hình ảnh La-pu-la-pu được chọn làm biểu tượng cho lực lượng Cảnh sát và Cục Phòng cháy chữa cháy Phi-líp-pin."
+            },
+            {
+                q: "Câu 11: Thực dân Hà Lan bắt đầu quá trình xâm nhập vào In-đô-nê-xi-a vào thời điểm nào?",
+                options: [
+                    "A. Đầu thế kỉ XVI",
+                    "B. Cuối thế kỉ XVI",
+                    "C. Giữa thế kỉ XVII",
+                    "D. Đầu thế kỉ XX"
+                ],
+                answer: 1,
+                explain: "Thực dân Hà Lan bắt đầu xâm nhập In-đô-nê-xi-a vào cuối thế kỉ XVI."
+            },
+            {
+                q: "Câu 12: Thực dân Hà Lan hoàn thành việc kiểm soát nước In-đô-nê-xi-a vào khoảng thời gian nào?",
+                options: [
+                    "A. Đầu thế kỉ XVI",
+                    "B. Giữa thế kỉ XVI",
+                    "C. Giữa thế kỉ XVII",
+                    "D. Cuối thế kỉ XIX"
+                ],
+                answer: 2,
+                explain: "Hà Lan hoàn thành việc kiểm soát In-đô-nê-xi-a vào giữa thế kỉ XVII."
+            },
+            {
+                q: "Câu 13: Khu vực nào ở Đông Nam Á là đối tượng đầu tiên thu hút sự chú ý của thực dân phương Tây?",
+                options: [
+                    "A. Đông Nam Á lục địa",
+                    "B. Đông Nam Á hải đảo",
+                    "C. Lưu vực sông Mê Công",
+                    "D. Cao nguyên Sán"
+                ],
+                answer: 1,
+                explain: "Đông Nam Á hải đảo là đối tượng đầu tiên thu hút sự chú ý của thực dân phương Tây."
+            },
+            {
+                q: "Câu 14: Vì sao Đông Nam Á hải đảo thu hút sự chú ý đầu tiên của thực dân phương Tây?",
+                options: [
+                    "A. Có dân số ít và ít kháng cự",
+                    "B. Giàu tài nguyên, hương liệu, hàng hóa phong phú và nằm trên tuyến đường biển huyết mạch nối phương Đông - phương Tây",
+                    "C. Không có sự cạnh tranh giữa các nước thực dân",
+                    "D. Có hệ thống đường thủy nội địa phát triển nhất khu vực"
+                ],
+                answer: 1,
+                explain: "Khu vực hải đảo giàu tài nguyên, hương liệu, hàng hóa phong phú và nằm trên tuyến đường biển huyết mạch nối phương Đông với phương Tây."
+            },
+            {
+                q: "Câu 15: Toàn bộ lãnh thổ ngày nay của Ma-lai-xi-a, Xin-ga-po và Bru-nây rơi vào tay thực dân nào?",
+                options: [
+                    "A. Pháp",
+                    "B. Hà Lan",
+                    "C. Anh",
+                    "D. Tây Ban Nha"
+                ],
+                answer: 2,
+                explain: "Lãnh thổ ngày nay của Ma-lai-xi-a, Xin-ga-po và Bru-nây rơi vào tay người Anh."
+            },
+            {
+                q: "Câu 16: Quá trình xâm lược các nước Đông Nam Á hải đảo của thực dân phương Tây kéo dài trong khoảng thời gian nào?",
+                options: [
+                    "A. Gần 2 thế kỉ",
+                    "B. Gần 3 thế kỉ",
+                    "C. Gần 4 thế kỉ (từ đầu thế kỉ XVI đến đầu thế kỉ XX)",
+                    "D. Hơn 5 thế kỉ"
+                ],
+                answer: 2,
+                explain: "Quá trình xâm lược các nước Đông Nam Á hải đảo kéo dài gần 4 thế kỉ, từ đầu thế kỉ XVI đến đầu thế kỉ XX."
+            },
+            {
+                q: "Câu 17: Quá trình xâm lược của thực dân phương Tây đối với các nước Đông Nam Á lục địa bắt đầu vào thời gian nào?",
+                options: [
+                    "A. Đầu thế kỉ XVI",
+                    "B. Giữa thế kỉ XVII",
+                    "C. Thế kỉ XIX",
+                    "D. Đầu thế kỉ XX"
+                ],
+                answer: 2,
+                explain: "Quá trình xâm lược các nước Đông Nam Á lục địa bắt đầu vào thế kỉ XIX."
+            },
+            {
+                q: "Câu 18: Thực dân Anh xâm lược và chiếm được Mi-an-ma trong khoảng thời gian và số cuộc chiến tranh như thế nào?",
+                options: [
+                    "A. Hơn 40 năm (1824 - 1867), 2 cuộc chiến tranh",
+                    "B. Hơn 60 năm (1824 - 1885), 3 cuộc chiến tranh",
+                    "C. Gần 100 năm (1800 - 1898), 4 cuộc chiến tranh",
+                    "D. Khoảng 20 năm (1865 - 1885), 1 cuộc chiến tranh"
+                ],
+                answer: 1,
+                explain: "Anh xâm lược Mi-an-ma trong hơn 60 năm (1824 - 1885) qua 3 cuộc chiến tranh."
+            },
+            {
+                q: "Câu 19: Hình 4 minh họa sự kiện nào trong lịch sử xâm lược Đông Nam Á?",
+                options: [
+                    "A. Liên quân Pháp - Tây Ban Nha tấn công Đà Nẵng năm 1858",
+                    "B. Hải quân Anh tiến vào hải cảng ở Y-an-gun (Mi-an-ma) năm 1824",
+                    "C. Bồ Đào Nha đánh chiếm Ma-lắc-ca năm 1511",
+                    "D. Mỹ đánh chiếm Phi-líp-pin năm 1898"
+                ],
+                answer: 1,
+                explain: "Hình 4 là tranh vẽ hải quân Anh tiến vào hải cảng ở Y-an-gun (Mi-an-ma) năm 1824."
+            },
+            {
+                q: "Câu 20: Thực dân Pháp hoàn thành việc xâm chiếm 3 nước Đông Dương trong khoảng thời gian nào?",
+                options: [
+                    "A. Gần nửa thế kỉ (1858 - 1893)",
+                    "B. Hơn 60 năm (1824 - 1885)",
+                    "C. Gần 4 thế kỉ (1511 - 1898)",
+                    "D. Khoảng 15 năm (1870 - 1885)"
+                ],
+                answer: 0,
+                explain: "Pháp hoàn thành việc xâm chiếm 3 nước Đông Dương trong gần nửa thế kỉ (1858 - 1893)."
+            },
+            {
+                q: "Câu 21: Hình 5 ghi lại cảnh tượng lịch sử nào?",
+                options: [
+                    "A. Hải quân Anh vào cảng Y-an-gun năm 1824",
+                    "B. Liên quân Pháp - Tây Ban Nha tấn công Đà Nẵng (Việt Nam) năm 1858",
+                    "C. Quân Tây Ban Nha đổ bộ lên đảo Mắc-tan năm 1521",
+                    "D. Quân Hà Lan đổ bộ lên In-đô-nê-xi-a cuối thế kỉ XVI"
+                ],
+                answer: 1,
+                explain: "Hình 5 là tranh vẽ liên quân Pháp - Tây Ban Nha tấn công Đà Nẵng (Việt Nam) năm 1858."
+            },
+            {
+                q: "Câu 22: Đến đầu thế kỉ XX, cục diện thôn tính của thực dân phương Tây ở Đông Nam Á như thế nào?",
+                options: [
+                    "A. Mới chỉ dừng lại ở các thương cảng ven biển",
+                    "B. Đã hoàn thành quá trình thôn tính Đông Nam Á",
+                    "C. Các nước hải đảo vẫn giữ được độc lập hoàn toàn",
+                    "D. Thực dân Pháp chiếm toàn bộ khu vực"
+                ],
+                answer: 1,
+                explain: "Đến đầu thế kỉ XX, các nước thực dân phương Tây đã hoàn thành quá trình thôn tính Đông Nam Á."
+            },
+            {
+                q: "Câu 23: Đến đầu thế kỉ XX, tình trạng chung của hầu hết các nước trong khu vực Đông Nam Á là gì?",
+                options: [
+                    "A. Trở thành nước tư bản độc lập",
+                    "B. Trở thành thuộc địa của thực dân phương Tây",
+                    "C. Liên minh chống thực dân thành công",
+                    "D. Chia thành hai khối quân sự đối lập"
+                ],
+                answer: 1,
+                explain: "Hầu hết các nước trong khu vực đều trở thành thuộc địa của thực dân phương Tây."
+            },
+            {
+                q: "Câu 24: Quốc gia nào ở Đông Nam Á giữ được nền độc lập đến đầu thế kỉ XX nhưng bị lệ thuộc vào nước ngoài về nhiều mặt?",
+                options: [
+                    "A. Việt Nam",
+                    "B. In-đô-nê-xi-a",
+                    "C. Vương quốc Xiêm (Thái Lan)",
+                    "D. Phi-líp-pin"
+                ],
+                answer: 2,
+                explain: "Vương quốc Xiêm (Thái Lan) giữ được nền độc lập nhưng bị lệ thuộc vào nước ngoài về nhiều mặt."
+            },
+            {
+                q: "Câu 25: Vương quốc Xiêm (Thái Lan) đóng vai trò địa - chính trị nào giữa khu vực thuộc địa của thực dân Anh và thực dân Pháp?",
+                options: [
+                    "A. Căn cứ hải quân chung",
+                    "B. Vùng đệm",
+                    "C. Thủ phủ cai trị liên bang",
+                    "D. Khu phi quân sự"
+                ],
+                answer: 1,
+                explain: "Xiêm trở thành vùng đệm giữa khu vực thuộc địa của thực dân Anh và thực dân Pháp."
+            },
+            {
+                q: "Câu 26: Theo Lược đồ các nước Đông Nam Á cuối thế kỉ XIX - đầu thế kỉ XX (Hình 2), màu sắc nào thể hiện thuộc địa của thực dân Anh?",
+                options: [
+                    "A. Màu xanh lá cây",
+                    "B. Màu hồng / tím nhạt",
+                    "C. Màu cam / vàng nhạt",
+                    "D. Màu xanh dương"
+                ],
+                answer: 0,
+                explain: "Trên Lược đồ Hình 2, thuộc địa của thực dân Anh được thể hiện bằng màu xanh lá cây."
+            },
+            {
+                q: "Câu 27: Trong Lược đồ các nước Đông Nam Á cuối thế kỉ XIX - đầu thế kỉ XX (Hình 2), vùng lãnh thổ nào thuộc địa của thực dân Pháp?",
+                options: [
+                    "A. Mi-an-ma và Ma-lai-xi-a",
+                    "B. Việt Nam, Lào và Cam-pu-chia",
+                    "C. In-đô-nê-xi-a",
+                    "D. Phi-líp-pin"
+                ],
+                answer: 1,
+                explain: "Thuộc địa của thực dân Pháp trên lược đồ là 3 nước Đông Dương: Việt Nam, Lào và Cam-pu-chia."
+            },
+            {
+                q: "Câu 28: Theo Lược đồ các nước Đông Nam Á cuối thế kỉ XIX - đầu thế kỉ XX (Hình 2), quốc gia nào được tô màu trắng / không thuộc địa của một nước thực dân duy nhất?",
+                options: [
+                    "A. Phi-líp-pin",
+                    "B. In-đô-nê-xi-a",
+                    "C. Xiêm",
+                    "D. Ma-lai-xi-a"
+                ],
+                answer: 2,
+                explain: "Xiêm là quốc gia độc lập (vùng đệm) trên lược đồ, không nằm trong các mảng màu thuộc địa của Anh, Pháp, Hà Lan, Tây Ban Nha hay Mỹ."
+            },
+            {
+                q: "Câu 29: Theo Lược đồ các nước Đông Nam Á cuối thế kỉ XIX - đầu thế kỉ XX (Hình 2), thuộc địa của thực dân Hà Lan tập trung chủ yếu ở khu vực nào?",
+                options: [
+                    "A. Quần đảo In-đô-nê-xi-a ngày nay",
+                    "B. Bán đảo Đông Dương",
+                    "C. Bán đảo Mã Lai",
+                    "D. Quần đảo Phi-líp-pin"
+                ],
+                answer: 0,
+                explain: "Thuộc địa của Hà Lan tập trung chủ yếu ở quần đảo In-đô-nê-xi-a ngày nay."
+            },
+            {
+                q: "Câu 30: So với Đông Nam Á hải đảo, quá trình xâm lược của thực dân phương Tây vào Đông Nam Á lục địa diễn ra như thế nào về mặt thời gian?",
+                options: [
+                    "A. Sớm hơn khoảng hai thế kỉ",
+                    "B. Muộn hơn (bắt đầu vào thế kỉ XIX)",
+                    "C. Diễn ra cùng lúc từ đầu thế kỉ XVI",
+                    "D. Kéo dài hơn bốn thế kỉ"
+                ],
+                answer: 1,
+                explain: "Xâm lược Đông Nam Á lục địa bắt đầu vào thế kỉ XIX, muộn hơn so với Đông Nam Á hải đảo."
+            },
+            {
+                q: "Câu 31: Thủ đoạn mở đầu phổ biến của các nước phương Tây khi tiếp cận Đông Nam Á là gì?",
+                options: [
+                    "A. Phóng hỏa đốt phá các kinh thành ngay lập tức",
+                    "B. Thông qua buôn bán, truyền giáo và lập thương điểm rồi mở rộng xâm lược",
+                    "C. Tổ chức bầu cử lập chính phủ thân phương Tây",
+                    "D. Thuê lính đánh thuê bản địa làm thống đốc"
+                ],
+                answer: 1,
+                explain: "Thủ đoạn mở đầu là thông qua buôn bán, truyền giáo và lập thương điểm rồi mở rộng xâm lược."
+            },
+            {
+                q: "Câu 32: Điểm chung nổi bật trong cách thức tiến hành xâm lược Đông Nam Á của thực dân phương Tây là gì?",
+                options: [
+                    "A. Chỉ dùng con đường thương mại hòa bình",
+                    "B. Kết hợp nhiều thủ đoạn từ buôn bán, xâm nhập thị trường, can thiệp đến chiến tranh xâm lược quân sự",
+                    "C. Luôn chia đều quyền lợi mà không cạnh tranh",
+                    "D. Chỉ tấn công các quốc gia hải đảo"
+                ],
+                answer: 1,
+                explain: "Thực dân phương Tây dùng nhiều thủ đoạn từ buôn bán, xâm nhập thị trường đến chiến tranh xâm lược."
+            },
+            {
+                q: "Câu 33: Trong quá trình xâm lược Đông Nam Á, mối quan hệ giữa các nước thực dân phương Tây có đặc điểm gì?",
+                options: [
+                    "A. Hợp tác chặt chẽ, không có xung đột",
+                    "B. Cạnh tranh quyết liệt với nhau để giành thuộc địa và ảnh hưởng",
+                    "C. Luôn nhường nhau các vùng giàu tài nguyên",
+                    "D. Đặt dưới sự điều hành của một hội đồng chung"
+                ],
+                answer: 1,
+                explain: "Các nước thực dân cạnh tranh quyết liệt với nhau trong quá trình xâm lược."
+            },
+            {
+                q: "Câu 34: Yếu tố nội tại nào của các nước Đông Nam Á đã tạo điều kiện thuận lợi cho thực dân phương Tây xâm lược?",
+                options: [
+                    "A. Kinh tế tư bản chủ nghĩa phát triển vượt bậc",
+                    "B. Chế độ phong kiến suy thoái, khủng hoảng, nhiều cuộc nổi dậy chống lại",
+                    "C. Quân đội hiện đại nhưng thiếu lương thực",
+                    "D. Không có giao lưu với bên ngoài"
+                ],
+                answer: 1,
+                explain: "Chế độ phong kiến suy thoái, khủng hoảng cùng nhiều cuộc nổi dậy chống lại tạo thuận lợi cho thực dân xâm lược."
+            },
+            {
+                q: "Câu 35: Sự kiện năm 1858 tại Đà Nẵng cho thấy thực dân phương Tây nào đã liên kết tấn công Việt Nam?",
+                options: [
+                    "A. Anh và Hà Lan",
+                    "B. Pháp và Tây Ban Nha",
+                    "C. Bồ Đào Nha và Mỹ",
+                    "D. Anh và Pháp"
+                ],
+                answer: 1,
+                explain: "Hình 5 ghi nhận liên quân Pháp - Tây Ban Nha tấn công Đà Nẵng năm 1858."
+            },
+            {
+                q: "Câu 36: Tại sao thực dân Anh mở rộng ảnh hưởng nhanh chóng ở Đông Nam Á muộn hơn một số nước nhưng đến đầu thế kỉ XX lại chiếm được nhiều vùng lãnh thổ?",
+                options: [
+                    "A. Vì không gặp sự cạnh tranh nào từ các nước khác",
+                    "B. Vì sử dụng nhiều hình thức cai trị khác nhau và đẩy mạnh bành trướng trên cả hải đảo lẫn lục địa",
+                    "C. Vì các nước Đông Nam Á tự nguyện xin gia nhập",
+                    "D. Vì chỉ tập trung vào truyền giáo"
+                ],
+                answer: 1,
+                explain: "Anh nhanh chóng mở rộng ảnh hưởng dưới nhiều hình thức cai trị khác nhau và bành trướng mạnh ở khu vực."
+            },
+            {
+                q: "Câu 37: Quốc gia nào ở Đông Nam Á bị chuyển giao quyền cai trị từ một nước thực dân châu Âu sang một cường quốc ngoài châu Âu vào cuối thế kỉ XIX?",
+                options: [
+                    "A. In-đô-nê-xi-a",
+                    "B. Việt Nam",
+                    "C. Phi-líp-pin",
+                    "D. Mi-an-ma"
+                ],
+                answer: 2,
+                explain: "Phi-líp-pin chuyển từ thuộc địa Tây Ban Nha sang thuộc địa Mỹ sau năm 1898."
+            },
+            {
+                q: "Câu 38: Từ thông tin SGK, nhận định nào phản ánh đúng tính chất của quá trình thực dân phương Tây xâm lược Đông Nam Á?",
+                options: [
+                    "A. Diễn ra nhanh chóng trong vòng một thập kỉ",
+                    "B. Diễn ra lâu dài, từng bước, với nhiều thủ đoạn và mức độ khác nhau giữa các khu vực",
+                    "C. Chỉ diễn ra ở các nước có đường biên giới trên biển",
+                    "D. Không gặp phải sự kháng cự của nhân dân địa phương"
+                ],
+                answer: 1,
+                explain: "Quá trình xâm lược kéo dài qua nhiều thế kỉ, với nhiều thủ đoạn và diễn biến khác nhau giữa hải đảo và lục địa."
+            },
+            {
+                q: "Câu 39: Đặc điểm nào đúng về tình trạng của Xiêm vào đầu thế kỉ XX theo nội dung bài học?",
+                options: [
+                    "A. Trở thành thuộc địa kiểu mới của Hà Lan",
+                    "B. Giữ được độc lập nhưng bị lệ thuộc nhiều mặt và làm vùng đệm giữa Anh và Pháp",
+                    "C. Bị chia cắt thành ba xứ bảo hộ",
+                    "D. Trở thành thuộc địa của Tây Ban Nha"
+                ],
+                answer: 1,
+                explain: "Xiêm giữ độc lập nhưng lệ thuộc nhiều mặt và trở thành vùng đệm giữa Anh và Pháp."
+            },
+            {
+                q: "Câu 40: Việc thực dân phương Tây đánh chiếm các thương cảng và tuyến đường biển huyết mạch ở Đông Nam Á nhằm mục đích chiến lược gì?",
+                options: [
+                    "A. Phát triển du lịch biển cho châu Âu",
+                    "B. Kiểm soát giao thương, nguồn tài nguyên - hương liệu và làm bàn đạp mở rộng xâm lược",
+                    "C. Bảo vệ ngư dân địa phương",
+                    "D. Xây dựng các trường học hiện đại"
+                ],
+                answer: 1,
+                explain: "Nắm thương cảng và tuyến đường biển giúp kiểm soát giao thương, nguồn tài nguyên/hương liệu và mở rộng bành trướng."
+            },
+            {
+                q: "Câu 41: Cuộc xâm lược Mi-an-ma của thực dân Anh kéo dài bao nhiêu năm theo thông tin trong bài?",
+                options: [
+                    "A. 35 năm",
+                    "B. 45 năm",
+                    "C. Hơn 60 năm",
+                    "D. Gần 100 năm"
+                ],
+                answer: 2,
+                explain: "Anh xâm lược Mi-an-ma trong hơn 60 năm (1824 - 1885)."
+            },
+            {
+                q: "Câu 42: Cặp sự kiện và địa danh nào sau đây được ghép đúng theo nội dung trang sách?",
+                options: [
+                    "A. Năm 1511 - Bồ Đào Nha đánh chiếm Ma-lắc-ca",
+                    "B. Năm 1824 - Pháp tấn công Đà Nẵng",
+                    "C. Năm 1858 - Anh tiến vào Y-an-gun",
+                    "D. Năm 1898 - Hà Lan chiếm Phi-líp-pin"
+                ],
+                answer: 0,
+                explain: "Năm 1511 Bồ Đào Nha đánh chiếm Ma-lắc-ca là đúng."
+            },
+            {
+                q: "Câu 43: Khi thực dân phương Tây xâm nhập, các nước Đông Nam Á có điểm chung gì về mặt chính trị - xã hội?",
+                options: [
+                    "A. Đã xóa bỏ hoàn toàn chế độ phong kiến",
+                    "B. Chế độ phong kiến lâm vào tình trạng suy thoái, khủng hoảng",
+                    "C. Có nền dân chủ nghị viện ổn định",
+                    "D. Đều là các quốc gia thống nhất dưới một triều đại"
+                ],
+                answer: 1,
+                explain: "Phần lớn các nước Đông Nam Á đều lâm vào cảnh chế độ phong kiến suy thoái, khủng hoảng."
+            },
+            {
+                q: "Câu 44: Quá trình xâm lược của thực dân phương Tây vào Đông Nam Á lục địa gắn liền với hai thế lực thực dân chủ yếu nào được nêu trong bài?",
+                options: [
+                    "A. Anh và Pháp",
+                    "B. Bồ Đào Nha và Tây Ban Nha",
+                    "C. Hà Lan và Mỹ",
+                    "D. Tây Ban Nha và Hà Lan"
+                ],
+                answer: 0,
+                explain: "Ở Đông Nam Á lục địa, bài nhấn mạnh cuộc xâm lược của thực dân Anh (ở Mi-an-ma) và thực dân Pháp (ở 3 nước Đông Dương)."
+            },
+            {
+                q: "Câu 45: Vì sao Đông Nam Á hải đảo bị xâm lược từ sớm (đầu thế kỉ XVI) trong khi Đông Nam Á lục địa bị xâm lược muộn hơn (thế kỉ XIX)?",
+                options: [
+                    "A. Do Đông Nam Á lục địa không có tài nguyên",
+                    "B. Do vị trí tuyến đường biển, nguồn hương liệu - hàng hóa ở hải đảo thu hút sớm hơn và điều kiện địa lí, lịch sử từng vùng khác nhau",
+                    "C. Do người dân lục địa không biết buôn bán",
+                    "D. Do thực dân phương Tây cấm thuyền bè vào lục địa trước thế kỉ XIX"
+                ],
+                answer: 1,
+                explain: "Sự khác biệt về thời điểm gắn với sức hút của tuyến đường biển, tài nguyên/hương liệu ở hải đảo và đặc điểm từng vùng."
+            },
+            {
+                q: "Câu 46: Hình ảnh La-pu-la-pu chống quân Tây Ban Nha năm 1521 gợi lên tinh thần gì của người dân Đông Nam Á trước sự xâm lược của thực dân phương Tây?",
+                options: [
+                    "A. Thụ động chấp nhận đầu hàng",
+                    "B. Kiên cường đấu tranh bảo vệ vùng đất và cộng đồng của mình",
+                    "C. Hợp tác với thực dân để chia quyền lực",
+                    "D. Rời bỏ hoàn toàn hải đảo"
+                ],
+                answer: 1,
+                explain: "Hành động chống quân Tây Ban Nha năm 1521 thể hiện tinh thần đấu tranh bảo vệ vùng đất và cộng đồng."
+            },
+            {
+                q: "Câu 47: Nhận định nào sau đây KHÔNG đúng với tình hình Đông Nam Á đến đầu thế kỉ XX theo nội dung bài học?",
+                options: [
+                    "A. Quá trình thôn tính của thực dân phương Tây đã hoàn thành",
+                    "B. Hầu hết các nước trong khu vực đều trở thành thuộc địa",
+                    "C. Xiêm giữ được độc lập nhưng bị lệ thuộc nhiều mặt và là vùng đệm giữa Anh - Pháp",
+                    "D. Mọi quốc gia Đông Nam Á đều giữ được chủ quyền hoàn toàn"
+                ],
+                answer: 3,
+                explain: "Đến đầu thế kỉ XX không phải mọi quốc gia đều giữ được chủ quyền hoàn toàn, mà hầu hết đã thành thuộc địa và Xiêm cũng bị lệ thuộc nhiều mặt."
+            },
+            {
+                q: "Câu 48: Thủ đoạn nào thường đi liền với việc lập thương điểm của thực dân phương Tây ở Đông Nam Á giai đoạn đầu?",
+                options: [
+                    "A. Truyền giáo và mở rộng giao thương",
+                    "B. Ban hành hiến pháp tư sản",
+                    "C. Thành lập chính phủ liên hiệp",
+                    "D. Xây dựng các nhà máy hạt nhân"
+                ],
+                answer: 0,
+                explain: "Giai đoạn đầu gắn với buôn bán, truyền giáo và lập thương điểm."
+            },
+            {
+                q: "Câu 49: Việc nghiên cứu quá trình thực dân phương Tây xâm lược Đông Nam Á giúp hiểu rõ điều gì về cục diện khu vực đầu thế kỉ XX?",
+                options: [
+                    "A. Sự hình thành bản đồ thuộc địa của các nước đế quốc và vị thế đặc biệt của Xiêm",
+                    "B. Sự sụp đổ hoàn toàn của chủ nghĩa tư bản phương Tây",
+                    "C. Sự thống nhất thành một quốc gia duy nhất của Đông Nam Á",
+                    "D. Sự chấm dứt mọi mâu thuẫn giữa các nước lớn"
+                ],
+                answer: 0,
+                explain: "Giúp nhận diện rõ bản đồ phân chia thuộc địa đầu thế kỉ XX và vị thế vùng đệm của Xiêm."
+            },
+            {
+                q: "Câu 50: Đâu là chuỗi mốc thời gian phản ánh đúng trình tự một số sự kiện tiêu biểu trong bài?",
+                options: [
+                    "A. 1511 (Ma-lắc-ca) -> 1824 (Y-an-gun) -> 1858 (Đà Nẵng) -> 1898 (Phi-líp-pin chuyển sang Mỹ)",
+                    "B. 1858 (Đà Nẵng) -> 1511 (Ma-lắc-ca) -> 1824 (Y-an-gun) -> 1898 (Phi-líp-pin)",
+                    "C. 1898 (Phi-líp-pin) -> 1858 (Đà Nẵng) -> 1824 (Y-an-gun) -> 1511 (Ma-lắc-ca)",
+                    "D. 1824 (Y-an-gun) -> 1511 (Ma-lắc-ca) -> 1898 (Phi-líp-pin) -> 1858 (Đà Nẵng)"
+                ],
+                answer: 0,
+                explain: "Trình tự thời gian đúng là 1511 -> 1824 -> 1858 -> 1898."
+            }
+        ];
+
+        let currentPlayerName = "";
+        let currentPlayerKey = "";
+        let currentAttemptNumber = 1;
+        let currentQ = 0;
+        let score = 0;
+        let correctCount = 0;
+        let combo = 0;
+        let timeLeft = 100;
+        let timerInterval;
+        let answered = false;
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function normalizeName(name) {
+            return name.trim().replace(/\s+/g, " ");
+        }
+
+        function nameToKey(name) {
+            return normalizeName(name).toLowerCase();
+        }
+
+        function loadRecords() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                const parsed = raw ? JSON.parse(raw) : [];
+                return Array.isArray(parsed) ? parsed : [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function saveRecords(records) {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+            } catch (e) {}
+        }
+
+        function saveResultForPlayer(name, earnedScore, earnedCorrect) {
+            const cleanName = normalizeName(name);
+            const key = nameToKey(cleanName);
+            const records = loadRecords();
+            const nowStr = new Date().toLocaleString("vi-VN");
+
+            let existing = records.find(r => r.key === key);
+            if (!existing) {
+                existing = {
+                    key,
+                    name: cleanName,
+                    attempts: 0,
+                    bestScore: 0,
+                    lastScore: 0,
+                    bestCorrect: 0,
+                    lastCorrect: 0,
+                    history: []
+                };
+                records.push(existing);
+            } else {
+                existing.name = cleanName;
+            }
+
+            existing.attempts += 1;
+            existing.lastScore = earnedScore;
+            existing.lastCorrect = earnedCorrect;
+            if (earnedScore > existing.bestScore) {
+                existing.bestScore = earnedScore;
+                existing.bestCorrect = earnedCorrect;
+            }
+            existing.history.push({
+                attempt: existing.attempts,
+                score: earnedScore,
+                correct: earnedCorrect,
+                time: nowStr
+            });
+
+            saveRecords(records);
+            return existing;
+        }
+
+        function getRankedPlayers() {
+            const records = loadRecords();
+            return records.slice().sort((a, b) => {
+                if (b.bestScore !== a.bestScore) return b.bestScore - a.bestScore;
+                if (b.bestCorrect !== a.bestCorrect) return b.bestCorrect - a.bestCorrect;
+                return a.attempts - b.attempts;
+            });
+        }
+
+        function renderLeaderboardTable(targetId, highlightKey = "") {
+            const container = document.getElementById(targetId);
+            if (!container) return;
+
+            const ranked = getRankedPlayers();
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Hạng</th>
+                            <th>Họ và tên</th>
+                            <th>Số lần làm</th>
+                            <th>Điểm cao nhất</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            for (let rank = 1; rank <= MAX_RANKS; rank++) {
+                const player = ranked[rank - 1];
+                if (player) {
+                    const isCurrent = highlightKey && player.key === highlightKey;
+                    const medal = rank === 1 ? "🥇 " : (rank === 2 ? "🥈 " : (rank === 3 ? "🥉 " : ""));
+                    html += `
+                        <tr class="${isCurrent ? "current-player-row" : ""}">
+                            <td>${medal}#${rank}</td>
+                            <td>${escapeHtml(player.name)}</td>
+                            <td>${player.attempts}</td>
+                            <td>${player.bestScore}</td>
+                        </tr>
+                    `;
+                } else {
+                    html += `
+                        <tr>
+                            <td>#${rank}</td>
+                            <td class="empty-slot">---</td>
+                            <td class="empty-slot">-</td>
+                            <td class="empty-slot">-</td>
+                        </tr>
+                    `;
+                }
+            }
+
+            html += `</tbody></table>`;
+            container.innerHTML = html;
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#39;");
+        }
+
+        function openPasswordModal() {
+            const modal = document.getElementById("password-modal");
+            const input = document.getElementById("delete-password-input");
+            const err = document.getElementById("password-error");
+            input.value = "";
+            err.style.display = "none";
+            modal.classList.add("active");
+            setTimeout(() => input.focus(), 50);
+        }
+
+        function closePasswordModal() {
+            document.getElementById("password-modal").classList.remove("active");
+        }
+
+        function confirmDeleteWithPassword() {
+            const input = document.getElementById("delete-password-input");
+            const err = document.getElementById("password-error");
+            if (input.value !== DELETE_PASSWORD) {
+                err.style.display = "block";
+                input.focus();
+                return;
+            }
+
+            localStorage.removeItem(STORAGE_KEY);
+            closePasswordModal();
+            renderLeaderboardTable("start-leaderboard", "");
+            renderLeaderboardTable("end-leaderboard", "");
+        }
+
+        function playSound(freq, type, duration) {
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.value = freq;
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
+                osc.stop(audioCtx.currentTime + duration);
+            } catch(e){}
+        }
+
+        function playCorrectSound() {
+            playSound(587.33, 'triangle', 0.1);
+            setTimeout(() => playSound(880, 'triangle', 0.2), 100);
+        }
+
+        function playWrongSound() {
+            playSound(150, 'sawtooth', 0.3);
+        }
+
+        function startGameWithName(rawName) {
+            const cleanName = normalizeName(rawName || "");
+            const errorEl = document.getElementById("name-error");
+
+            if (!cleanName) {
+                errorEl.style.display = "block";
+                document.getElementById("player-name-input").focus();
+                return;
+            }
+
+            errorEl.style.display = "none";
+            currentPlayerName = cleanName;
+            currentPlayerKey = nameToKey(cleanName);
+
+            try {
+                localStorage.setItem(LAST_NAME_KEY, cleanName);
+            } catch (e) {}
+
+            const existing = loadRecords().find(r => r.key === currentPlayerKey);
+            currentAttemptNumber = existing ? existing.attempts + 1 : 1;
+
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+
+            currentQ = 0;
+            score = 0;
+            correctCount = 0;
+            combo = 0;
+
+            document.getElementById("active-player-badge").innerText = `Thí sinh: ${currentPlayerName}`;
+            document.getElementById("attempt-display").innerText = currentAttemptNumber;
+
+            document.getElementById('start-screen').classList.add('hide');
+            document.getElementById('end-screen').classList.add('hide');
+            document.getElementById('quiz-screen').classList.remove('hide');
+            showQuestion();
+        }
+
+        function startGame() {
+            const inputEl = document.getElementById("player-name-input");
+            startGameWithName(inputEl.value);
+        }
+
+        function replaySamePlayer() {
+            startGameWithName(currentPlayerName);
+        }
+
+        function backToStart() {
+            clearInterval(timerInterval);
+            document.getElementById('quiz-screen').classList.add('hide');
+            document.getElementById('end-screen').classList.add('hide');
+            document.getElementById('start-screen').classList.remove('hide');
+            document.getElementById("player-name-input").value = currentPlayerName;
+            renderLeaderboardTable("start-leaderboard", currentPlayerKey);
+        }
+
+        function showQuestion() {
+            answered = false;
+            resetTimer();
+            const q = questions[currentQ];
+            document.getElementById('question-number').innerText = currentQ + 1;
+            document.getElementById('question-text').innerText = q.q;
+            document.getElementById('score').innerText = score;
+            document.getElementById('correct-count').innerText = correctCount;
+
+            const explainBox = document.getElementById('explanation-box');
+            const nextBtn = document.getElementById('next-btn');
+            explainBox.style.display = 'none';
+            nextBtn.style.display = 'none';
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'btn';
+                btn.innerText = opt;
+                btn.onclick = () => selectAnswer(index);
+                optionsContainer.appendChild(btn);
+            });
+
+            updateComboUI();
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timeLeft = 100;
+            const timerEl = document.getElementById('timer');
+            timerEl.style.width = '100%';
+            timerEl.style.backgroundColor = '#4CAF50';
+
+            timerInterval = setInterval(() => {
+                timeLeft -= 0.5;
+                timerEl.style.width = Math.max(0, timeLeft) + '%';
+
+                if (timeLeft > 50) timerEl.style.backgroundColor = '#4CAF50';
+                else if (timeLeft > 20) timerEl.style.backgroundColor = '#FF9800';
+                else timerEl.style.backgroundColor = '#f44336';
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    selectAnswer(-1);
+                }
+            }, 100);
+        }
+
+        function selectAnswer(selectedIndex) {
+            if (answered) return;
+            answered = true;
+            clearInterval(timerInterval);
+
+            const q = questions[currentQ];
+            const buttons = document.getElementById('options-container').querySelectorAll('.btn');
+            const isCorrect = selectedIndex === q.answer;
+            const card = document.getElementById('game-card');
+
+            buttons.forEach((btn, idx) => {
+                btn.disabled = true;
+                if (idx === q.answer) {
+                    btn.classList.add('btn-correct');
+                } else if (idx === selectedIndex) {
+                    btn.classList.add('btn-wrong');
+                }
+            });
+
+            if (isCorrect) {
+                playCorrectSound();
+                correctCount++;
+                combo++;
+                score += 100 + (combo * 20);
+                card.classList.add('pop');
+                setTimeout(() => card.classList.remove('pop'), 300);
+                fireConfetti();
+            } else {
+                playWrongSound();
+                combo = 0;
+                card.classList.add('shake');
+                setTimeout(() => card.classList.remove('shake'), 500);
+            }
+
+            document.getElementById('score').innerText = score;
+            document.getElementById('correct-count').innerText = correctCount;
+            updateComboUI();
+
+            const explainBox = document.getElementById('explanation-box');
+            explainBox.innerHTML = `<strong>${isCorrect ? '✅ Chính xác!' : (selectedIndex === -1 ? '⏰ Hết giờ!' : '❌ Chưa chính xác!')}</strong> ${q.explain}`;
+            explainBox.style.display = 'block';
+
+            const nextBtn = document.getElementById('next-btn');
+            nextBtn.innerText = currentQ < questions.length - 1 ? 'CÂU TIẾP THEO ➡️' : 'XEM KẾT QUẢ 🏆';
+            nextBtn.style.display = 'block';
+        }
+
+        function nextQuestion() {
+            currentQ++;
+            if (currentQ < questions.length) {
+                showQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function updateComboUI() {
+            const comboEl = document.getElementById('combo');
+            if (combo > 1) {
+                comboEl.innerText = `COMBO x${combo}! 🔥`;
+                comboEl.style.display = 'block';
+            } else {
+                comboEl.style.display = 'none';
+            }
+        }
+
+        function endGame() {
+            const savedPlayer = saveResultForPlayer(currentPlayerName, score, correctCount);
+            const ranked = getRankedPlayers();
+            const rankIndex = ranked.findIndex(p => p.key === currentPlayerKey);
+            const currentRankText = rankIndex >= 0 ? `#${rankIndex + 1}` : "Ngoài top 38";
+
+            document.getElementById('quiz-screen').classList.add('hide');
+            document.getElementById('end-screen').classList.remove('hide');
+
+            document.getElementById('end-player-badge').innerText = `Thí sinh: ${currentPlayerName}`;
+            document.getElementById('final-score').innerText = score;
+            document.getElementById('final-correct').innerText = `Bạn trả lời đúng ${correctCount}/50 câu`;
+
+            let rank = "";
+            if (correctCount >= 45) rank = "🏆 GIÁO SƯ SỬ HỌC! THUỘC LÒNG TỪNG CHI TIẾT!";
+            else if (correctCount >= 35) rank = "💡 Kiến thức lịch sử rất chắc chắn!";
+            else if (correctCount >= 25) rank = "😐 Tạm ổn, ôn lại thêm một chút nhé!";
+            else rank = "📚 Cần mở sách Lịch Sử ra đọc lại ngay rồi!";
+
+            document.getElementById('rank-text').innerText = rank;
+
+            const recentHistory = savedPlayer.history
+                .slice(-5)
+                .map(h => `Lần ${h.attempt}: ${h.score} điểm (${h.correct}/50 câu) - ${h.time}`)
+                .join("<br>");
+
+            document.getElementById('user-summary-box').innerHTML = `
+                <strong>Họ tên:</strong> ${escapeHtml(savedPlayer.name)}<br>
+                <strong>Tổng số lần làm:</strong> ${savedPlayer.attempts}<br>
+                <strong>Điểm cao nhất:</strong> ${savedPlayer.bestScore} điểm (Hạng hiện tại: <strong>${currentRankText}</strong>)<br>
+                <div style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed #dcdde1;">
+                    <strong>Lịch sử gần nhất:</strong><br>${recentHistory}
+                </div>
+            `;
+
+            renderLeaderboardTable("end-leaderboard", currentPlayerKey);
+            renderLeaderboardTable("start-leaderboard", currentPlayerKey);
+            fireConfetti();
+        }
+
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function fireConfetti() {
+            for (let i = 0; i < 40; i++) {
+                particles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2,
+                    vx: (Math.random() - 0.5) * 14,
+                    vy: (Math.random() - 0.5) * 14,
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                    size: Math.random() * 8 + 4,
+                    life: 90
+                });
+            }
+        }
+
+        function updateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p, index) => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.2;
+                p.life -= 2;
+
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+
+                if (p.life <= 0) particles.splice(index, 1);
+            });
+            requestAnimationFrame(updateParticles);
+        }
+        updateParticles();
+
+        (function init() {
+            try {
+                const lastName = localStorage.getItem(LAST_NAME_KEY);
+                if (lastName) {
+                    document.getElementById("player-name-input").value = lastName;
+                }
+            } catch (e) {}
+            renderLeaderboardTable("start-leaderboard", "");
+        })();
+    </script>
+</body>
+</html>
